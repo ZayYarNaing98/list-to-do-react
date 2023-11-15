@@ -1,0 +1,8 @@
+body, html{
+  height: 100vh;
+  font-family: 'Source Sans 3', sans-serif;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+ 
+}
