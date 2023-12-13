@@ -12,7 +12,8 @@ import {
 import "../../assets/styles/Login.css";
 import logo from "../../assets/img/logo.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,6 +23,16 @@ const Login = () => {
   const [inputData, setInputData] = useState({
     email: "",
     password: "",
+  });
+
+  const [authInfo, setAuthInfo] = useState<any>({
+    token: "",
+    id: "",
+    name: "",
+    email: "",
+    gender: "",
+    status: "",
+    address: "",
   });
 
   const handleTogglePassword = () => {
@@ -40,26 +51,33 @@ const Login = () => {
     authRequest({ email: inputData.email, password: inputData.password })
       .then((response) => {
         console.log(response.data);
+
         const responseData = response.data;
         if (responseData.code === 200) {
           toast.success(responseData.message);
-          localStorage.setItem("token", responseData.data.token);
-          localStorage.setItem("id", responseData.data.id);
-          localStorage.setItem("name", responseData.data.name);
-          localStorage.setItem("email", responseData.data.email);
-          localStorage.setItem("gender", responseData.data.gender);
-          localStorage.setItem("status", responseData.data.status);
-          localStorage.setItem("address", responseData.data.address);
 
-          navigate("/hello");
+          const data = {
+            token: responseData.data.token,
+            id: responseData.data.id,
+            name: responseData.data.name,
+            email: responseData.data.email,
+            gender: responseData.data.gender,
+            status: responseData.data.status,
+            address: responseData.data.address,
+          };
+          localStorage.setItem("authData", JSON.stringify(data));
         }
+        navigate("/hello");
       })
       .catch((err) => {
         console.error(err);
       });
   };
+  console.log(authInfo);
+
   return (
     <>
+      <ToastContainer />
       <div className="login-container">
         <div className="form-container">
           <form action="" onSubmit={handleAuth}>
